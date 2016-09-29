@@ -127,35 +127,61 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(RSSDK_DIR)\include;$(EIGEN_DIR);$(DLIB_DIR)\include;$(ProjectDir)\libicp\src;$(BOOST_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\$(PlatformName)\vc12\lib;$(RSSDK_DIR)\lib\$(PlatformName);$(RSSDK_DIR)\sample\common\lib\$(PlatformName)\$(PlatformToolset);$(DLIB_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libpxc.lib;libpxcutils.lib;opencv_highgui2413.lib;opencv_core2413.lib;opencv_objdetect2413.lib;opencv_imgproc2413.lib;dlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
+    <ClCompile Include="dlibFaceDetector.cpp" />
+    <ClCompile Include="eyeModel.cpp" />
+    <ClCompile Include="faceModel.cpp" />
+    <ClCompile Include="GazeDemoDlib.cpp" />
+    <ClCompile Include="gazeDisplay.cpp" />
+    <ClCompile Include="gazeTracker.cpp" />
+    <ClCompile Include="geometricAlgorithms.cpp" />
+    <ClCompile Include="landmarkTracker.cpp" />
+    <ClCompile Include="libicp\src\icp.cpp" />
+    <ClCompile Include="libicp\src\icpPointToPlane.cpp" />
+    <ClCompile Include="libicp\src\icpPointToPoint.cpp" />
+    <ClCompile Include="libicp\src\kdtree.cpp" />
+    <ClCompile Include="libicp\src\matrix.cpp" />
+    <ClCompile Include="readConfig.cpp" />
+    <ClCompile Include="RealsenseCapture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GazeDemoDlib.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClInclude Include="dlibFaceDetector.h" />
+    <ClInclude Include="eyeModel.h" />
+    <ClInclude Include="faceModel.h" />
+    <ClInclude Include="gazeDisplay.h" />
+    <ClInclude Include="gazeTracker.h" />
+    <ClInclude Include="geometricAlgorithms.h" />
+    <ClInclude Include="interpolateScatteredData.h" />
+    <ClInclude Include="landmarkTracker.h" />
+    <ClInclude Include="libicp\src\icp.h" />
+    <ClInclude Include="libicp\src\icpPointToPlane.h" />
+    <ClInclude Include="libicp\src\icpPointToPoint.h" />
+    <ClInclude Include="libicp\src\kdtree.h" />
+    <ClInclude Include="libicp\src\matrix.h" />
+    <ClInclude Include="omp.h" />
+    <ClInclude Include="readConfig.h" />
+    <ClInclude Include="RealsenseCapture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

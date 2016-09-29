@@ -13,24 +13,111 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\libicp">
+      <UniqueIdentifier>{b5f1d755-25c0-4a9e-be35-09f4871a33a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\lipicp">
+      <UniqueIdentifier>{3eb6d604-eba3-43e0-a3b5-5f95deba24c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GazeDemoDlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="eyeModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="faceModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gazeDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gazeTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geometricAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="readConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RealsenseCapture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libicp\src\icp.cpp">
+      <Filter>Source Files\libicp</Filter>
+    </ClCompile>
+    <ClCompile Include="libicp\src\icpPointToPlane.cpp">
+      <Filter>Source Files\libicp</Filter>
+    </ClCompile>
+    <ClCompile Include="libicp\src\icpPointToPoint.cpp">
+      <Filter>Source Files\libicp</Filter>
+    </ClCompile>
+    <ClCompile Include="libicp\src\kdtree.cpp">
+      <Filter>Source Files\libicp</Filter>
+    </ClCompile>
+    <ClCompile Include="libicp\src\matrix.cpp">
+      <Filter>Source Files\libicp</Filter>
+    </ClCompile>
+    <ClCompile Include="landmarkTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dlibFaceDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="eyeModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="faceModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gazeDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gazeTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometricAlgorithms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="interpolateScatteredData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="omp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="readConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RealsenseCapture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libicp\src\icp.h">
+      <Filter>Header Files\lipicp</Filter>
+    </ClInclude>
+    <ClInclude Include="libicp\src\icpPointToPlane.h">
+      <Filter>Header Files\lipicp</Filter>
+    </ClInclude>
+    <ClInclude Include="libicp\src\icpPointToPoint.h">
+      <Filter>Header Files\lipicp</Filter>
+    </ClInclude>
+    <ClInclude Include="libicp\src\kdtree.h">
+      <Filter>Header Files\lipicp</Filter>
+    </ClInclude>
+    <ClInclude Include="libicp\src\matrix.h">
+      <Filter>Header Files\lipicp</Filter>
+    </ClInclude>
+    <ClInclude Include="landmarkTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dlibFaceDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,20 @@
+frame width:
+640
+
+frame height:
+480
+
+frame rate:
+30
+
+calibration points:
+13
+
+samples per calibration point:
+5
+
+display block horizontal:
+4
+
+display block verticle:
+3
