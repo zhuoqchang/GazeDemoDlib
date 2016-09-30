@@ -151,12 +151,12 @@ void gazeTracker::getFrame(cv::Mat& frame) {
 }
 
 void gazeTracker::createFaceModel() {
-	char key;
+	//char key;
 
 	cv::Mat display;
 	cv::namedWindow("Face Model", cv::WINDOW_NORMAL);
 
-	do {
+	// do {
 		// omit first 30 frames 
 		for (int i = 0; i < 30; i++) {
 			run();
@@ -177,7 +177,6 @@ void gazeTracker::createFaceModel() {
 			cv::flip(display, display, 1);
 			cv::imshow("Face Model", display);
 			cv::waitKey(5);
-
 		} while (LT.ifLmMissing());
 
 		//cv::Mat mappedColorFrame, mappedColorFace, lm2D;
@@ -194,8 +193,8 @@ void gazeTracker::createFaceModel() {
 		//std::cout << "Is this face model OK? (y/n)" << std::endl;
 		//std::cin >> key;
 
-		break;
-	} while (key != 'y');
+	//	break;
+	//} while (key != 'y');
 
 	cv::destroyWindow("Face Model");
 	// std::cout << "saving face model" << std::endl;
@@ -210,7 +209,7 @@ void gazeTracker::createFaceModel() {
 	FM.createReferenceFaceModel(lm2D, rigidLm3D, pointCloud);
 	EM.createEyeModel(lm3D);
 
-	// std::cout << "saved face model" << std::endl;
+	std::cout << "saved face model" << std::endl;
 }
 
 void gazeTracker::startCalibration() {

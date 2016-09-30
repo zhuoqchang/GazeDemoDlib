@@ -44,7 +44,7 @@ void eyeModel::init(int a, int b) {
 
 void eyeModel::loadConfigData() {
 	ifstream* infile = new ifstream;
-	string filename = "..\\..\\data\\calibration.txt";
+	string filename = "../../data/calibration.txt";
 	infile->open(filename);
 	if (!infile->is_open()) {
 		cout << "Could not open calibration file!" << endl;
@@ -112,11 +112,10 @@ void eyeModel::calibrate(const Vertices& pc, const cv::Mat& color, const Transfo
 		Vertices pc_aligned;
 		applyTransform(cpc_clean.pc, trans, pc_aligned);
 		cpc_clean.pc = pc_aligned;
-		cout << "basis:" << endl;
+
 		createEyeImage(cpc_clean, leftEyeRegion, leftEyeImg);
-		cout << "basis:" << endl;
 		createEyeImage(cpc_clean, rightEyeRegion, rightEyeImg);
-		cout << "basis:" << endl;
+
 		cv::Mat xl, xr;
 		leftEyeImg.reshape(0, 960).convertTo(xl, CV_64FC1);
 		rightEyeImg.reshape(0, 960).convertTo(xr, CV_64FC1);
@@ -142,7 +141,6 @@ void eyeModel::calibrate(const Vertices& pc, const cv::Mat& color, const Transfo
 		leftGazeDictionary.col(dcount) = lgv;
 		rightGazeDictionary.col(dcount) = rgv;
 		dcount++;
-
 	}
 }
 
@@ -168,69 +166,55 @@ void eyeModel::run(const Vertices& pc, const cv::Mat& color, const TransformType
 }
 
 void eyeModel::createEyeImage(const colorPointCloud& colorPc, const eyeRegion& eye, cv::Mat& eyeImg) {
-	// crop point cloud and texture to eye region
-	colorPointCloud cpcCropped;
-	cv::Rect r;
-	cropEye(colorPc, eye, cpcCropped, r);
 
-	// interpolate to create eye image
-	interpolateEyeImage(cpcCropped, eye, r, eyeImg);
-	std::cout << "finished interpolating ..." << std::endl;
-}
-
-void eyeModel::cropEye(const colorPointCloud& cpc, const eyeRegion& eye, colorPointCloud& cpcCropped, cv::Rect& rect) {
-
+	// crop eye image
 	// set boundaries
-	float offset = 5.0f;
+	float offset = 2.0f;
 	float xmin = std::floorf(eye.center(0) - 0.5 * eye.width - offset);
 	float xmax = std::ceilf(eye.center(0) + 0.5 * eye.width + offset);
 	float ymin = std::floorf(eye.center(1) - 0.5 * eye.height - offset);
 	float ymax = std::ceilf(eye.center(1) + 0.5 * eye.height + offset);
 
-	rect = cv::Rect((int)xmin, (int)ymin, (int)(xmax - xmin), (int)(ymax - ymin));
-	int n = cpc.pc.cols();
+	cv::Rect r = cv::Rect((int)xmin, (int)ymin, (int)(xmax - xmin), (int)(ymax - ymin));
+	int n = colorPc.pc.cols();
 	//std::cout << "size: " << cpc.pc.rows() << " x " << cpc.pc.cols() << std::endl;
 	std::vector<int> ind;
 	// compute size of cropped region
 	for (int i = 0; i < n; i++) {
-		if (cpc.pc(0, i) > xmin && cpc.pc(0, i) < xmax && cpc.pc(1, i) > ymin && cpc.pc(1, i) < ymax) {
+		if (colorPc.pc(0, i) > xmin && colorPc.pc(0, i) < xmax && colorPc.pc(1, i) > ymin && colorPc.pc(1, i) < ymax) {
 			ind.push_back(i);
 		}
 	}
 	int nc = ind.size();
-	//std::cout << "cropped size: " << nc << std::endl;
-	// std::cout << "copying data ..." << std::endl;
-	// copy the data 
+
+	// crop point cloud and texture to eye region
+	colorPointCloud cpcCropped;
 	cpcCropped.pc.resize(3, nc);
 	cpcCropped.tex = cv::Mat::zeros(1, nc, CV_8UC1);
 	for (int i = 0; i < nc; i++) {
-		cpcCropped.pc.col(i) = cpc.pc.col(ind.at(i));
-		cpc.tex.col(ind.at(i)).copyTo(cpcCropped.tex.col(i));
+		cpcCropped.pc.col(i) = colorPc.pc.col(ind.at(i));
+		colorPc.tex.col(ind.at(i)).copyTo(cpcCropped.tex.col(i));
 	}
-	// std::cout << "finished cropping eye ..." << std::endl;
-}
 
-void eyeModel::interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& eye, const cv::Rect& r, cv::Mat& img) {
-	// Coordinates of data points.
-	int n = cpc.pc.cols();
+	// interpolate to create eye image
 	std::vector<cv::Point2f> points;
 	std::vector<uchar> val;
 
-	for (int i = 0; i < n; i++) {
-		points.push_back(cv::Point2f(cpc.pc(0, i), cpc.pc(1, i)));
-		val.push_back(cpc.tex.at<uchar>(0, i));
+	for (int i = 0; i < nc; i++) {
+		points.push_back(cv::Point2f(cpcCropped.pc(0, i), cpcCropped.pc(1, i)));
+		val.push_back(cpcCropped.tex.at<uchar>(0, i));
 	}
-
-	// std::cout << "setting up algorithm ..." << std::endl;
-	cv::Subdiv2D subdiv(r);
-	subdiv.insert(points);
 
 	cv::Mat tmp = cv::Mat::zeros(eyeRegionRes.height, eyeRegionRes.width, CV_8UC1);
 	Eigen::VectorXf x, y;
 	x.setLinSpaced(eyeRegionRes.width, eye.center(0) - 0.5 * eye.width, eye.center(0) + 0.5 * eye.width);
 	y.setLinSpaced(eyeRegionRes.height, eye.center(1) - 0.5 * eye.height, eye.center(1) + 0.5 * eye.height);
-	// std::cout << "interpolation ..." << std::endl;
+	
+	// interpolate to create eye image
+	cv::Subdiv2D subdiv(r);
+	subdiv.insert(points);
 	uchar uc;
+
 	for (int j = 0; j < y.size(); j++) {
 		for (int i = 0; i < x.size(); i++) {
 			// Get interpolated value at arbitrary location.
@@ -240,11 +224,8 @@ void eyeModel::interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& 
 			}
 		}
 	}
-	tmp.copyTo(img);
 
-	//cv::namedWindow("leftEye", CV_WINDOW_NORMAL);
-	//cv::imshow("leftEye",img);
-	//cv::waitKey(5);
+	tmp.copyTo(eyeImg);
 }
 
 void eyeModel::getEyeImage(cv::Mat& img, int id) {
@@ -293,7 +274,7 @@ void eyeModel::removeMissingData(const colorPointCloud& in, colorPointCloud& out
 void eyeModel::runOmp() {
 	cv::Mat xl, xr; // imput image reshaped as vector
 	cv::Mat_<double> cl, cr; // omp coefficients to be computed
-	int k = 25; // omp sparsity parameter
+	int k = 5; // omp sparsity parameter
 	// reshape
 	leftEyeImg.reshape(0, 960).convertTo(xl, CV_64FC1);
 	rightEyeImg.reshape(0, 960).convertTo(xr, CV_64FC1);

@@ -25,7 +25,7 @@ bool dlibFaceDetector::detectLandmarks(const cv::Mat& im, cv::Mat& lm) {
 	cv_image<bgr_pixel> cimg(im);
 
 	// Detect faces on resize image
-	std::vector<dlib::rectangle> faces;
+	//std::vector<dlib::rectangle> faces;
 	if (count % SKIP_FRAMES == 0) {
 		faces = detector(cimg_small);
 	}
@@ -44,11 +44,12 @@ bool dlibFaceDetector::detectLandmarks(const cv::Mat& im, cv::Mat& lm) {
 		// Landmark detection on full sized image
 		full_object_detection shape = pose_model(cimg, r);
 
-		for (int i = 0; i < NUM_OF_LANDMARKS; ++i) {
+		for (int i = 0; i < NUM_OF_LANDMARKS; i++) {
 			lmx.at<float>(0, i) = shape.part(i+17).x();
 			lmx.at<float>(1, i) = shape.part(i+17).y();
 		}
 		lmx.copyTo(lm);
+		count++;
 		return true;
 	}
 	else {

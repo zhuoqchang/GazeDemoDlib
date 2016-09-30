@@ -32,9 +32,9 @@ void landmarkTracker::run(cv::Mat& color, const Vertices& vertices) {
 
 void landmarkTracker::detect(cv::Mat& color) {
 	isDetect = dlibFace.detectLandmarks(color, depthLm);
-	if (isDetect) {
-			std::cout << "(" << depthLm.at<float>(0, 14) << ", " << depthLm.at<float>(1, 14) << ")" << std::endl;
-	}
+	//if (isDetect) {
+	//		std::cout << "(" << depthLm.at<float>(0, 14) << ", " << depthLm.at<float>(1, 14) << ")" << std::endl;
+	//}
 }
 
 void landmarkTracker::depthToWorld(const Vertices& vertices) {

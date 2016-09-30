@@ -24,6 +24,7 @@ public:
 private:
 	frontal_face_detector detector;
 	shape_predictor pose_model;
+	std::vector<dlib::rectangle> faces;
 	int count;
 };
 
