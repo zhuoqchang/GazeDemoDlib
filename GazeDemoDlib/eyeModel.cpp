@@ -65,10 +65,6 @@ void eyeModel::loadConfigData() {
 
 	cout << "number of calibration points:" << endl << numOfCalibPoints << endl;
 	cout << "samples per calibration point:" << endl << samplesPerCalibPoint << endl;
-	//cout << "affineTrans:" << endl << calibParams.affineTrans << endl;
-	//cout << "basis:" << endl << calibParams.basis << endl;
-	//cout << "monitorPlane:" << endl << calibParams.monitorPlane << endl;
-	//cout << "zBias:" << endl << calibParams.zbias << endl;
 
 	infile->close();
 	delete infile;
@@ -105,7 +101,8 @@ void eyeModel::getEyeRegion(const Eigen::MatrixXf& eyeLm3D, eyeRegion& eyeReg) {
 }
 
 void eyeModel::calibrate(const Vertices& pc, const cv::Mat& color, const TransformType& trans, const cv::Point& pt) {
-	if (dcount < maxDCount) { //numOfCalibPoints * samplesPerCalibPoint) {
+	if (dcount < maxDCount) {
+
 		cv::Mat tex;
 		computeTexture(color, tex);
 		colorPointCloud cpc_raw(pc, tex);
@@ -115,10 +112,11 @@ void eyeModel::calibrate(const Vertices& pc, const cv::Mat& color, const Transfo
 		Vertices pc_aligned;
 		applyTransform(cpc_clean.pc, trans, pc_aligned);
 		cpc_clean.pc = pc_aligned;
-
-		leftEyeImg = createEyeImage(cpc_clean, leftEyeRegion);
-		rightEyeImg = createEyeImage(cpc_clean, rightEyeRegion);
-
+		cout << "basis:" << endl;
+		createEyeImage(cpc_clean, leftEyeRegion, leftEyeImg);
+		cout << "basis:" << endl;
+		createEyeImage(cpc_clean, rightEyeRegion, rightEyeImg);
+		cout << "basis:" << endl;
 		cv::Mat xl, xr;
 		leftEyeImg.reshape(0, 960).convertTo(xl, CV_64FC1);
 		rightEyeImg.reshape(0, 960).convertTo(xr, CV_64FC1);
@@ -159,8 +157,8 @@ void eyeModel::run(const Vertices& pc, const cv::Mat& color, const TransformType
 	applyTransform(cpc_clean.pc, trans, pc_aligned);
 	cpc_clean.pc = pc_aligned;
 
-	leftEyeImg = createEyeImage(cpc_clean, leftEyeRegion);
-	rightEyeImg = createEyeImage(cpc_clean, rightEyeRegion);
+	createEyeImage(cpc_clean, leftEyeRegion, leftEyeImg);
+	createEyeImage(cpc_clean, rightEyeRegion, rightEyeImg);
 
 	runOmp();
 	leftFixPoint = computeFixPoint(leftGazeVector, leftEyeRegion.center, trans);
@@ -169,14 +167,15 @@ void eyeModel::run(const Vertices& pc, const cv::Mat& color, const TransformType
 	//cout << "right fixation point: " << rightFixPoint << endl;
 }
 
-cv::Mat eyeModel::createEyeImage(const colorPointCloud& colorPc, const eyeRegion& eye) {
+void eyeModel::createEyeImage(const colorPointCloud& colorPc, const eyeRegion& eye, cv::Mat& eyeImg) {
 	// crop point cloud and texture to eye region
 	colorPointCloud cpcCropped;
 	cv::Rect r;
 	cropEye(colorPc, eye, cpcCropped, r);
 
 	// interpolate to create eye image
-	return interpolateEyeImage(cpcCropped, eye, r);
+	interpolateEyeImage(cpcCropped, eye, r, eyeImg);
+	std::cout << "finished interpolating ..." << std::endl;
 }
 
 void eyeModel::cropEye(const colorPointCloud& cpc, const eyeRegion& eye, colorPointCloud& cpcCropped, cv::Rect& rect) {
@@ -211,7 +210,7 @@ void eyeModel::cropEye(const colorPointCloud& cpc, const eyeRegion& eye, colorPo
 	// std::cout << "finished cropping eye ..." << std::endl;
 }
 
-cv::Mat eyeModel::interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& eye, const cv::Rect& r) {
+void eyeModel::interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& eye, const cv::Rect& r, cv::Mat& img) {
 	// Coordinates of data points.
 	int n = cpc.pc.cols();
 	std::vector<cv::Point2f> points;
@@ -226,27 +225,26 @@ cv::Mat eyeModel::interpolateEyeImage(const colorPointCloud& cpc, const eyeRegio
 	cv::Subdiv2D subdiv(r);
 	subdiv.insert(points);
 
-	int ni = eyeRegionRes.width * eyeRegionRes.height;
-	//cv::Mat eyeImg = cv::Mat::zeros(1, ni, CV_8UC1);
-	cv::Mat eyeImg = cv::Mat::zeros(eyeRegionRes.height, eyeRegionRes.width, CV_8UC1);
+	cv::Mat tmp = cv::Mat::zeros(eyeRegionRes.height, eyeRegionRes.width, CV_8UC1);
 	Eigen::VectorXf x, y;
 	x.setLinSpaced(eyeRegionRes.width, eye.center(0) - 0.5 * eye.width, eye.center(0) + 0.5 * eye.width);
 	y.setLinSpaced(eyeRegionRes.height, eye.center(1) - 0.5 * eye.height, eye.center(1) + 0.5 * eye.height);
 	// std::cout << "interpolation ..." << std::endl;
 	uchar uc;
-	// cout << x.size() << endl;
 	for (int j = 0; j < y.size(); j++) {
 		for (int i = 0; i < x.size(); i++) {
 			// Get interpolated value at arbitrary location.
 			cv::Point2f p(x(i), y(j));
-			
 			if (interpolateScatteredData(subdiv, p, val, uc)) {
-				eyeImg.at<uchar>(y.size() - j - 1, i) = uc;
+				tmp.at<uchar>(y.size() - j - 1, i) = uc;
 			}
 		}
 	}
-	// std::cout << "finished interpolation ..." << std::endl;
-	return eyeImg;
+	tmp.copyTo(img);
+
+	//cv::namedWindow("leftEye", CV_WINDOW_NORMAL);
+	//cv::imshow("leftEye",img);
+	//cv::waitKey(5);
 }
 
 void eyeModel::getEyeImage(cv::Mat& img, int id) {

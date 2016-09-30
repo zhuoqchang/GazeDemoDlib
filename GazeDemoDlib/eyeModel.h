@@ -75,10 +75,9 @@ private:
 	void computeTexture(const cv::Mat& color, cv::Mat& tex);
 	void removeMissingData(const colorPointCloud& in, colorPointCloud& out);
 	void getEyeRegion(const Eigen::MatrixXf& eyeLm3D, eyeRegion& eyeReg);
-	cv::Mat createEyeImage(const colorPointCloud& colorPc, const eyeRegion& eye);
+	void createEyeImage(const colorPointCloud& colorPc, const eyeRegion& eye, cv::Mat& eyeImg);
 	void cropEye(const colorPointCloud& cpc, const eyeRegion& eye, colorPointCloud& cpcCropped, cv::Rect& rect);
-	cv::Mat interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& eye, const cv::Rect& r);
-	//void removeMissingData(const colorPointCloud& in, colorPointCloud& out);
+	void interpolateEyeImage(const colorPointCloud& cpc, const eyeRegion& eye, const cv::Rect& r, cv::Mat& eyeImg);
 	void runOmp();
 	cv::Point computeFixPoint(const Vertices& gazeVec, const Vertices& eyeCenter, const TransformType& trans);
 	cv::Point coordToPixel(const Vertices& pt3);

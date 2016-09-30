@@ -13,12 +13,12 @@
 
 #include "dlibFaceDetector.h"
 
-#define NUM_OF_LANDMARKS 68
+#define NUM_OF_LANDMARKS 51
 
 const int rigidNum = 9;
 const int borderNum = 5;
-const int rigidIdx[rigidNum] = { 28, 31, 32, 34, 36, 37, 40, 43, 46 };
-const int borderIdx[borderNum] = { 22, 23, 34, 37, 46 };
+const int rigidIdx[rigidNum] = { 11, 14, 15, 17, 19, 20, 23, 26, 29 };
+const int borderIdx[borderNum] = { 5, 6, 17, 20, 29 };
 const float thresh = 50.0f;
 
 typedef Eigen::Matrix<float, 3, Eigen::Dynamic> Vertices;

@@ -88,15 +88,11 @@ gazeTracker::~gazeTracker(){
 
 void gazeTracker::run() {
 	RC.captureFrame();
-	cout << "Could not open config file!" << endl;
 	cv::Mat mappedColorFrame;
 	Vertices pointCloud;
 	RC.getMappedColorFrame(mappedColorFrame);
-	cout << "Could not open config file!" << endl;
 	RC.getPointCloud(pointCloud);
-	cout << "Could not open config file!" << endl;
 	LT.run(mappedColorFrame, pointCloud);
-	cout << "Could not open config file!" << endl;
 }
 
 void gazeTracker::loadConfigData() {
@@ -184,12 +180,12 @@ void gazeTracker::createFaceModel() {
 
 		} while (LT.ifLmMissing());
 
-		cv::Mat mappedColorFrame, mappedColorFace, lm2D;
-		Vertices pointCloud;
-		RC.getMappedColorFrame(mappedColorFrame);
-		RC.getPointCloud(pointCloud);
-		LT.getDepthLm(lm2D);
-		FM.getFaceImage(mappedColorFrame, lm2D, mappedColorFace);
+		//cv::Mat mappedColorFrame, mappedColorFace, lm2D;
+		//Vertices pointCloud;
+		//RC.getMappedColorFrame(mappedColorFrame);
+		//RC.getPointCloud(pointCloud);
+		//LT.getDepthLm(lm2D);
+		//FM.getFaceImage(mappedColorFrame, lm2D, mappedColorFace);
 
 		//cv::Mat display = mappedColorFace.clone();
 		//cv::flip(display, display, 1);
@@ -197,6 +193,7 @@ void gazeTracker::createFaceModel() {
 		//cv::waitKey(5);
 		//std::cout << "Is this face model OK? (y/n)" << std::endl;
 		//std::cin >> key;
+
 		break;
 	} while (key != 'y');
 
@@ -226,8 +223,6 @@ void gazeTracker::startCalibration() {
 	//cv::resizeWindow("leftEye", 40, 24);
 	//cv::resizeWindow("rightEye", 40, 24);
 
-	std::string pathPrefix = "../../../data/calibPoint";
-	std::string imgType = ".png";
 	for (int i = 0; i < numOfCalibPoints; i++) {
 		cv::Mat display = cv::Mat::zeros(cv::Size(pixelWidth, pixelHeight), CV_8UC3);
 		drawCircle(display, calibrationPoints[i]);

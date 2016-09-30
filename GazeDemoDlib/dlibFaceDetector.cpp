@@ -2,7 +2,7 @@
 
 #define FACE_DOWNSAMPLE_RATIO 2
 #define SKIP_FRAMES 2
-#define NUM_OF_LANDMARKS 68
+#define NUM_OF_LANDMARKS 51
 
 dlibFaceDetector::dlibFaceDetector() {
 	detector = get_frontal_face_detector();
@@ -45,8 +45,8 @@ bool dlibFaceDetector::detectLandmarks(const cv::Mat& im, cv::Mat& lm) {
 		full_object_detection shape = pose_model(cimg, r);
 
 		for (int i = 0; i < NUM_OF_LANDMARKS; ++i) {
-			lmx.at<float>(0, i) = shape.part(i).x();
-			lmx.at<float>(1, i) = shape.part(i).y();
+			lmx.at<float>(0, i) = shape.part(i+17).x();
+			lmx.at<float>(1, i) = shape.part(i+17).y();
 		}
 		lmx.copyTo(lm);
 		return true;
