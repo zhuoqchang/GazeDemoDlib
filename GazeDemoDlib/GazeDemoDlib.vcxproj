@@ -136,7 +136,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(RSSDK_DIR)\include;$(EIGEN_DIR);$(DLIB_DIR)\$(Configuration)\include;$(ProjectDir)\libicp\src;$(BOOST_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(RSSDK_DIR)\include;$(EIGEN_DIR);$(DLIB_DIR)\vc12\$(Configuration)\include;$(ProjectDir)\libicp\src;$(BOOST_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\$(PlatformName)\vc12\lib;$(RSSDK_DIR)\lib\$(PlatformName);$(RSSDK_DIR)\sample\common\lib\$(PlatformName)\$(PlatformToolset);$(DLIB_DIR)\$(configuration)\lib;D:\SapiroLab\Documents\Zhuoqing\Github\GazeDemoIntraface\GazeDemoBuild\3rdparty\opencv\vc12\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\$(PlatformName)\vc12\lib;$(RSSDK_DIR)\lib\$(PlatformName);$(RSSDK_DIR)\sample\common\lib\$(PlatformName)\$(PlatformToolset);$(DLIB_DIR)\vc12\$(configuration)\lib;D:\SapiroLab\Documents\Zhuoqing\Github\GazeDemoIntraface\GazeDemoBuild\3rdparty\opencv\vc12\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libpxc.lib;libpxcutils.lib;opencv_highgui2413.lib;opencv_core2413.lib;opencv_objdetect2413.lib;opencv_imgproc2413.lib;dlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

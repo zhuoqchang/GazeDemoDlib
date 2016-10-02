@@ -5,16 +5,6 @@
 #include "geometricAlgorithms.h"
 #include "readConfig.h"
 
-std::vector<float> linspace(float a, float b, int n) {
-	std::vector<float> array;
-	float step = (b - a) / (n - 1);
-	while (a <= b) {
-		array.push_back(a);
-		a += step;           // could recode to better handle rounding errors
-	}
-	return array;
-}
-
 eyeModel::eyeModel() {
 }
 
@@ -39,7 +29,6 @@ void eyeModel::init(int a, int b) {
 	loadConfigData(); // load calibration data
 
 	dcount = 0; // counter to keep track of number of calibration images
-	// cout << "finished eye init" << endl;
 }
 
 void eyeModel::loadConfigData() {
